@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Блог</h1>
+<ul>
+  {% for post in posts %}
+    <li>
+      <a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a>
+      {% if post.preview_image %}
+        <img src="{{ post.preview_image.url }}" alt="{{ post.title }}" style="width:100px;">
+        (Просмотров: {{ post.views_count }})
+      {% endif %}
+      <p>{{ post.created_at|date:"d.m.Y H:i" }}</p>
+    </li>
+  {% empty %}
+    <li>Постов нет.</li>
+  {% endfor %}
+</ul>
+
+{% if is_paginated %}
+  <div>
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+    {% endif %}
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+<a href="{% url 'blog_create' %}">Добавить новый пост</a>
+{% endblock %}
