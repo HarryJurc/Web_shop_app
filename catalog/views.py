@@ -1,7 +1,8 @@
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
-from django.shortcuts import redirect
+from catalog.forms import ProductForm
 from catalog.models import Product
+from django.urls import reverse_lazy
 
 
 class HomeView(ListView):
@@ -27,3 +28,23 @@ class ProductDetailView(DetailView):
     template_name = 'product_detail.html'
     context_object_name = 'product'
     pk_url_kwarg = 'product_id'
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'product_form.html'
+    success_url = reverse_lazy('home')
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'product_form.html'
+    success_url = reverse_lazy('home')
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'product_confirm_delete.html'
+    success_url = reverse_lazy('home')
