@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from .models import BlogPost
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class BlogListView(ListView):
     model = BlogPost
@@ -22,13 +23,13 @@ class BlogDetailView(DetailView):
         obj.save(update_fields=['views_count'])
         return obj
 
-class BlogCreateView(CreateView):
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = BlogPost
     template_name = 'blog_form.html'
     fields = ['title', 'content', 'preview_image', 'is_published']
     success_url = reverse_lazy('blog_list')
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
     model = BlogPost
     template_name = 'blog_form.html'
     fields = ['title', 'content', 'preview_image', 'is_published']
@@ -37,7 +38,7 @@ class BlogUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('blog_detail', kwargs={'pk': self.object.pk})
 
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(LoginRequiredMixin, DeleteView):
     model = BlogPost
     template_name = 'blog_confirm_delete.html'
     success_url = reverse_lazy('blog_list')
