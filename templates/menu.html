@@ -5,4 +5,16 @@
         <a class="p-2 btn btn-outline-primary" href="/contacts/">Контакты</a>
         <a class="p-2 btn btn-outline-primary" href="/blogs/">Блог</a>
     </nav>
+    <div class="ms-auto">
+        {% if user.is_authenticated %}
+            <span class="me-3">Привет, {{ user.email }}</span>
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger">Выйти</button>
+            </form>
+        {% else %}
+            <a class="btn btn-outline-success me-2" href="{% url 'login' %}">Войти</a>
+            <a class="btn btn-primary" href="{% url 'register' %}">Регистрация</a>
+        {% endif %}
+    </div>
 </div>
