@@ -10,6 +10,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+        },
+        'KEY_PREFIX': 'skystore',
+    }
+}
+
+CACHE_ENABLED = True
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

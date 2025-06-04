@@ -19,7 +19,12 @@
             <h1>{{ product.name }}</h1>
             <p>{{ product.description }}</p>
             <h3 class="text-primary">Цена: {{ product.price }} руб.</h3>
-            <p><strong>Категория:</strong> {{ product.category.name }}</p>
+            <p>
+                <strong>Категория:</strong>
+                <a href="{% url 'products_by_category' product.category.id %}">
+                  {{ product.category.name }}
+                </a>
+            </p>
             <p><strong>Дата создания:</strong> {{ product.created_at|date:"d.m.Y H:i" }}</p>
             <p><strong>Дата последнего изменения:</strong> {{ product.updated_at|date:"d.m.Y H:i" }}</p>
         </div>
@@ -27,9 +32,9 @@
             {% if user.is_authenticated %}
                 {% if user == product.owner or perms.catalog.can_unpublish_product %}
                     <a href="{% url 'product_edit' product.pk %}" class="btn btn-warning me-2">Редактировать</a>
-                    <a href="{% url 'product_delete' product.pk %}" class="btn btn-danger me-2">Удалить</a>
+                    <a href="{% url 'product_delete_from_detail' product.pk %}" class="btn btn-danger me-2">Удалить</a>
                 {% endif %}
-                {% if perms.catalog.can_unpublish_product %}
+                {% if user.is_authenticated and perms.catalog.can_unpublish_product %}
                     {% if product.status == 'published' %}
                         <form method="post" action="{% url 'product_unpublish' product.pk %}" style="display:inline;">
                             {% csrf_token %}

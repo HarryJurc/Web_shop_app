@@ -4,6 +4,9 @@
         <a class="p-2 btn btn-outline-primary" href="/">Каталог</a>
         <a class="p-2 btn btn-outline-primary" href="/contacts/">Контакты</a>
         <a class="p-2 btn btn-outline-primary" href="/blogs/">Блог</a>
+        {% if user.is_authenticated and perms.catalog.can_unpublish_product %}
+            <a class="p-2 btn btn-outline-warning" href="{% url 'drafts_list' %}">Черновики</a>
+        {% endif %}
     </nav>
     <div class="ms-auto">
         {% if user.is_authenticated %}

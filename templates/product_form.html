@@ -21,7 +21,11 @@
             {% endfor %}
           </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+
+        <button type="submit" name="action" value="save" class="btn btn-primary">Сохранить в базу данных</button>
+        {% if user.is_authenticated and perms.catalog.can_unpublish_product %}
+        <button type="submit" name="action" value="publish" class="btn btn-success">Сохранить и опубликовать</button>
+        {% endif %}
       </form>
 
       <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Отмена</a>
